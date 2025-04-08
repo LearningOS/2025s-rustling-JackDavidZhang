@@ -2,8 +2,6 @@
 	queue
 	This question requires you to use queues to implement the functionality of the stac
 */
-// I AM NOT DONE
-
 #[derive(Debug)]
 pub struct Queue<T> {
     elements: Vec<T>,
@@ -54,28 +52,52 @@ impl<T> Default for Queue<T> {
 
 pub struct myStack<T>
 {
-	//TODO
+	flag:bool,
 	q1:Queue<T>,
 	q2:Queue<T>
 }
 impl<T> myStack<T> {
     pub fn new() -> Self {
         Self {
-			//TODO
+			flag:true,
 			q1:Queue::<T>::new(),
 			q2:Queue::<T>::new()
         }
     }
     pub fn push(&mut self, elem: T) {
-        //TODO
+        if self.flag{
+            self.q1.enqueue(elem);
+        }else{
+            self.q2.enqueue(elem);
+        }
     }
     pub fn pop(&mut self) -> Result<T, &str> {
-        //TODO
-		Err("Stack is empty")
+        if self.flag{
+            if self.q1.is_empty(){
+                return Err("Stack is empty");
+            }
+            while self.q1.size() > 1{
+                self.q2.enqueue(self.q1.dequeue().unwrap());
+            }
+            self.flag = false;
+            self.q1.dequeue()
+        }else{
+            if self.q2.is_empty(){
+                return Err("Stack is empty");
+            }
+            while self.q2.size() > 1{
+                self.q1.enqueue(self.q2.dequeue().unwrap());
+            }
+            self.flag = true;
+            self.q2.dequeue()
+        }
     }
     pub fn is_empty(&self) -> bool {
-		//TODO
-        true
+		if self.flag{
+            self.q1.is_empty()
+        }else{
+            self.q2.is_empty()
+        }
     }
 }
 

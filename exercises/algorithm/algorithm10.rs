@@ -2,8 +2,6 @@
 	graph
 	This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
-
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 #[derive(Debug, Clone)]
@@ -29,7 +27,22 @@ impl Graph for UndirectedGraph {
         &self.adjacency_table
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        match self.adjacency_table.get_mut(edge.0){
+            None=>{
+                self.adjacency_table.insert(String::from(edge.0),vec![(String::from(edge.1),edge.2)]);
+            }
+            Some(vector)=>{
+                vector.push((String::from(edge.1),edge.2));
+            }
+        };
+        match self.adjacency_table.get_mut(edge.1){
+            None=>{
+                self.adjacency_table.insert(String::from(edge.1),vec![(String::from(edge.0),edge.2)]);
+            }
+            Some(vector)=>{
+                vector.push((String::from(edge.0),edge.2));
+            }
+        }
     }
 }
 pub trait Graph {
@@ -41,7 +54,22 @@ pub trait Graph {
 		true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        match self.adjacency_table_mutable().get_mut(edge.0){
+            None=>{
+                self.adjacency_table_mutable().insert(String::from(edge.0),vec![(String::from(edge.1),edge.2)]);
+            }
+            Some(vector)=>{
+                vector.push((String::from(edge.1),edge.2));
+            }
+        };
+        match self.adjacency_table_mutable().get_mut(edge.1){
+            None=>{
+                self.adjacency_table_mutable().insert(String::from(edge.1),vec![(String::from(edge.0),edge.2)]);
+            }
+            Some(vector)=>{
+                vector.push((String::from(edge.0),edge.2));
+            }
+        }
     }
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()
